@@ -1,0 +1,146 @@
+@define-color background #fafafa;
+@define-color foreground #383a42;
+@define-color cursorColor #526eff;
+@define-color color0 #5C6370;
+@define-color color1 #E06C75;
+@define-color color2 #98C379;
+@define-color color3 #E5C07B;
+@define-color color4 #61AFEF;
+@define-color color5 #C678DD;
+@define-color color6 #56B6C2;
+@define-color color7 #ABB2BF;
+@define-color color8 #4B5263;
+@define-color color9 #BE5046;
+@define-color color10 #98C379;
+@define-color color11 #D19A66;
+@define-color color12 #61AFEF;
+@define-color color13 #C678DD;
+@define-color color14 #56B6C2;
+@define-color color15 #ABB2BF;
+
+* {
+    border: none;
+    border-radius: 0;
+    /* `otf-font-awesome` is required to be installed for icons */
+    font-family: Futura Bk BT, Material Design Icons;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: transparent;
+    border-bottom: 0px solid rgba(100, 114, 125, 0.5);
+    color: #000;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+#workspaces {
+    margin: 3px;
+    background-color: transparent;
+}
+
+#workspaces button {
+    padding: 0 0 0 0;
+    margin: 0px 2px 0px 2px;
+    min-width: 0;
+    background-color: transparent;
+    color: @foreground;
+    box-shadow: inset 0 -3px transparent;
+}
+
+#workspaces.focus button.focused {
+    color: #FFF;
+    padding: 2.8 3px;
+    margin: 0px;
+    border-radius: 10px;
+    background-color: #000;
+}
+
+#workspaces button:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#workspaces button.focused {
+    color: @color5;
+    padding: 0 0px;
+    margin: 0px;
+    border-radius: 10px;
+}
+
+#workspaces button.urgent {
+    background-color: #eb4d4b;
+}
+
+#mode {
+    background-color: @cursorColor;
+    color: @background;
+    border-radius: 10px;
+    margin: 3px 0 3px 0;
+    padding: 0 5px;
+}
+
+#window {
+    margin: 0 4px;
+}
+
+
+#pulseaudio, #battery, #network {
+    padding: 0 10px;
+    margin: 3px 0px 3px 0px;
+    background-color: #000;
+    color: #FFF;
+}
+
+#pulseaudio {
+    border-radius: 10px 0px 0px 10px;
+}
+
+#network {
+    border-radius: 0px 10px 10px 0px;
+    margin: 3px 3px 3px 0;
+}
+
+#clock {
+	color: #FFF;
+    padding: 0 10px;
+    margin: 2px;
+    border-radius: 5px;
+    background-color: #000;
+}
+
+#battery.charging {
+    color: @color2;
+}
+
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: #000000;
+    }
+}
+
+#battery.critical:not(.charging) {
+    color: @color4;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+label:focus {
+    background-color: #000000;
+}
+
+#network.disconnected {
+    color: @color1;
+}
+
+#pulseaudio.muted {
+    color: @color0;
+}

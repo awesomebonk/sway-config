@@ -1,0 +1,253 @@
+# Autostart
+exec --no-startup-id /etc/xdg/autostart/polkit-mate-authentication-agent-1
+exec GDK_BACKEND=wayland
+exec CLUTTER_BACKEND=wayland
+
+# Style
+font pango:monospace 12px 
+default_border pixel 2
+titlebar_border_thickness 2
+gaps outer 5
+gaps inner 5
+
+## Window decoration
+# class                 border  backgr. text    indicator child_border
+client.focused          #000000 #434c5e #FFFFFF #8fbcbb   #88c0d0
+client.focused_inactive #88c0d0 #2e3440 #d8dee9 #4c566a   #4c566a
+client.unfocused        #88c0d0 #2e3440 #FFFFFF #4c566a   #4c566a
+client.urgent           #ebcb8b #ebcb8b #2e3440 #8fbcbb   #ebcb8b
+
+## GTK3 apperience
+set $gnome-schema org.gnome.desktop.interface
+
+exec_always {
+    gsettings set $gnome-schema gtk-theme 'Qogir-dark'
+    gsettings set $gnome-schema icon-theme 'Your icon theme'
+    gsettings set $gnome-schema cursor-theme 'DeppinDark-cursors'
+    gsettings set $gnome-schema font-name 'Roboto Medium 10'
+}
+
+# Window rules
+for_window [workspace="2"] layout tabbed
+for_window [app_id="torbrowser"] floating enable
+for_window [app_id="xfce4-terminal"] floating enable
+for_window [app_id="feh"] floating enable
+
+# Assignments
+assign [app_id="telegramdesktop"] 2
+assign [class="lightcord"] 2
+
+#assign [app_id="info.febvre.Komikku"] 5
+assign [class="Komikku"] 5
+assign [app_id="gnome-boxes"] 6
+
+# Keybindings
+
+## Touchpad settings
+input "1267:12363:MSFT0001:01_04F3:304B_Touchpad" {
+       dwt enabled
+       tap enabled
+       natural_scroll enabled
+       middle_emulation enabled
+   }
+## Keyboard layout
+input "1:1:AT_Translated_Set_2_keyboard" {
+    xkb_layout "us,ru"
+    xkb_variant "default"
+    xkb_options "grp:alt_shift_toggle"
+}
+
+input "1:1:AT_Translated_Set_2_keyboard" xkb_model "pc105"
+
+
+## Logo key
+set $mod Mod4
+
+## Home row direction keys
+set $left h
+set $down j
+set $up k
+set $right l
+
+# Defaults
+
+## terminal emulator
+set $term kitty
+
+## Your preferred application launcher
+# Note: pass the final command to swaymsg so that the resulting window can be opened
+# on the original workspace that the command was run on.
+set $menu wofi --hide-scroll | xargs swaymsg exec --
+
+## Output configuration
+# Default wallpaper 
+output * bg /home/notforu/Pictures/Wallpapers/wallhaven-g7ze63.jpg  fill
+
+# Behavior
+focus_follows_mouse yes
+
+### Idle configuration
+#
+# Example configuration:
+#
+ exec swayidle -w \
+          timeout 300 'swaylock -f' \
+          before-sleep 'swaylock -f'
+
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
+# Key bindings
+#
+# Basics:
+#
+# Start a terminal
+bindsym $mod+Return exec $term
+
+# Kill focused window
+bindsym --to-code $mod+q kill
+
+# Start your launcher
+bindsym $mod+space exec $menu
+
+# Screenshot with grim and swappy
+bindsym print exec grim - | swappy -f -
+bindsym Shift+print exec grim -g "$(slurp)" - | swappy -f -
+    # Drag floating windows by holding down $mod and left mouse button.
+    # Resize them with right mouse button + $mod.
+    # Despite the name, also works for non-floating windows.
+    # Change normal to inverse to use left mouse button for resizing and right
+    # mouse button for dragging.
+    floating_modifier $mod normal
+
+# Reload the configuration file
+bindsym --to-code $mod+Shift+r reload
+
+# Exit sway (logs you out of your Wayland session)
+bindsym $mod+Shift+q exec swaynag -t custom -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+#
+# Moving around:
+#
+# Move your focus around
+bindsym --to-code { 
+ $mod+k focus left
+ $mod+o focus down
+ $mod+i focus up
+ $mod+j focus right
+}
+
+# Move the focused window with the same, but add Shift
+bindsym --to-code {
+ $mod+Shift+$left move left
+ $mod+Shift+$down move down
+ $mod+Shift+$up move up
+ $mod+Shift+$right move right
+}
+#
+# Workspaces:
+#
+# Switch to workspace
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+# Note: workspaces can have any name you want, not just numbers.
+# We just use 1-10 as the default.
+bindsym $mod+Tab workspace back_and_forth
+#
+# Layout stuff:
+#
+    # You can "split" the current object of your focus with
+    # $mod+b or $mod+v, for horizontal and vertical splits
+    # respectively.
+    bindsym --to-code { 
+     $mod+b splith
+     $mod+v splitv
+    }
+
+    # Switch the current container between different layout styles
+    bindsym --to-code { 
+     $mod+m layout tabbed
+     $mod+t layout toggle split
+    }
+
+    # Make the current focus fullscreen
+    bindsym --to-code $mod+f fullscreen
+
+    # Toggle floating and between floating and other windows
+    bindsym --to-code { 
+     $mod+s floating toggle
+     $mod+Shift+s focus mode_toggle
+    }
+
+    # Move focus to the parent container
+    bindsym --to-code $mod+a focus parent
+
+    # Move focus to the child container
+    bindsym --to-code $mod+Shift+a focus child
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $mod+minus scratchpad show
+#
+# Resizing containers:
+#
+    bindsym --to-code {
+     $mod+alt+$left resize shrink width 20px
+     $mod+alt+$up resize grow height 20px
+     $mod+alt+$down resize shrink height 20px
+     $mod+alt+$right resize grow width 20px
+    }
+
+## Special keys
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym --locked XF86AudioMute exec pactl set-sink-mute 0 toggle
+bindsym XF86MonBrightnessUp exec light -A 10 && notify-send "󰃞 Light" "Brightness: $(light)%"
+bindsym XF86MonBrightnessDown exec light -U 10 && notify-send "󰃞 Light" "Brightness: $(light)%"
+bindsym --locked XF86AudioPlay exec mpc toggle
+bindsym --locked XF86AudioNext exec mpc next
+bindsym --locked XF86AudioPrev exec mpc prev
+bindsym XF86TouchpadOff input type:touchpad events disabled
+bindsym XF86TouchpadOn input type:touchpad events enabled
+
+## Personal keybindings
+# exec nemo
+	bindsym $mod+shift+return exec nemo
+# exec geany
+	bindsym $mod+e exec Geany
+# lock screen
+	bindsym $mod+l exec swaylock --clock --indicator --screenshots --effect-scale 0.4 --effect-vignette 0.2:0.5 --effect-blur 4x2 --datestr "%a %e.%m.%Y" --timestr "%k:%M"
+# drop-down terminal
+	bindsym F12 exec xfce4-terminal --drop-down
+
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
+bar {
+    swaybar_command waybar
+    }
+}
+
+include /etc/sway/config.d/*
