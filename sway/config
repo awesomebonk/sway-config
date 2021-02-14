@@ -81,7 +81,7 @@ set $menu wofi --hide-scroll | xargs swaymsg exec --
 
 ## Output configuration
 # Default wallpaper 
-output * bg /home/notforu/Pictures/Wallpapers/wallhaven-g7ze63.jpg  fill
+output * bg ~/images/wallhaven-g7ze63.jpg  fill
 
 # Behavior
 focus_follows_mouse yes
